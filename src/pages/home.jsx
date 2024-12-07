@@ -6,6 +6,7 @@ const Home = () => {
   return (
     <div className="min-h-screen bg-gray-100 flex flex-col items-center">
       <h1 className="text-3xl font-bold text-blue-600 mt-10">🎉 AR Poll Categories 🎉</h1>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-10">
         {categories.map((category, index) => (
           <div
@@ -21,6 +22,14 @@ const Home = () => {
             </Link>
           </div>
         ))}
+      </div>
+
+
+      <div className=" bg-gray-100 flex flex-col shadow-md rounded-md p-4 m-4 items-center">
+        <h1 className="text-base font-bold text-blue-600 mt-2">Your Total Points</h1>
+          <p className="text-xl font-medium mt-2">
+            <span className="text-green-600">{localStorage.getItem("points")}</span>
+          </p>
       </div>
     </div>
   );

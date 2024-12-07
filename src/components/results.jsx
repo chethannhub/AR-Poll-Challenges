@@ -8,6 +8,8 @@ const Results = () => {
 
   const { thisGamePoints } = location.state || { thisGamePoints: 0 };
 
+  const catgoryId = localStorage.getItem("categoryId")
+
   useEffect(() => {
     const savedPoints = localStorage.getItem("points");
     const totalPoints = savedPoints ? parseInt(savedPoints, 10) : 0;
@@ -16,7 +18,7 @@ const Results = () => {
 
   const handleRestart = () => {
     localStorage.setItem("points", 0);
-    navigate("/poll/0", { state: { currentQuestion: 0 } });
+    navigate(`/poll/${catgoryId}`, { state: { currentQuestion: 0 } });
   };
 
   return (
@@ -43,7 +45,7 @@ const Results = () => {
             onClick={handleRestart}
             className="m-2 bg-blue-600 text-white px-4 py-2 rounded-md"
           >
-            Restart
+            Play Again
           </button>
         </div>
         

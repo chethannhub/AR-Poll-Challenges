@@ -77,16 +77,29 @@
                 console.error('Model URL not provided in the query parameters!');
             }
 
-            function navigateToARExperience() {
-                console.log("Data passed from AR Experience page in AR.html: ", modelUrl, categoryId, currentQuestion, totalQuestions)
-                window.location.href = `/ar-experience?model=${encodeURIComponent(
-                    modelUrl || ''
-                )}&categoryId=${encodeURIComponent(
-                    categoryId || ''
-                )}&currentQuestion=${encodeURIComponent(
-                    currentQuestion || ''
-                )}&totalQuestions=${encodeURIComponent(totalQuestions || '')}`;
+
+          
+          function navigateToARExperience() {
+            const modelUrl = getQueryParam('model');
+            const modelARUrl = getQueryParam('modelAR');
+            const categoryId = getQueryParam('categoryId');
+            const currentQuestion = getQueryParam('currentQuestion')
+            const showSelectedModel = localStorage.getItem('showSelectedModel');
+
+            console.log("In AR html: ",modelUrl, modelARUrl,showSelectedModel, categoryId, currentQuestion)
+          
+            if (modelUrl) {
+              localStorage.setItem('selectedModel', modelUrl);
+              localStorage.setItem('selectedModelAR', modelARUrl);
+              localStorage.setItem('categoryId', categoryId);
+              localStorage.setItem('currentQuestion', currentQuestion);
+              localStorage.setItem('showSelectedModel', true);
+          
+              window.location.href = `/poll/${categoryId}?currentQuestion=${encodeURIComponent(currentQuestion)}`;
             }
+          }
+            
+            
         </script>
 
     </body>
