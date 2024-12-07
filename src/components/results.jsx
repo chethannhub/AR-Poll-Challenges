@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
+import { FaHome, FaRedo } from "react-icons/fa";
 
 const Results = () => {
   const [points, setPoints] = useState(0);
@@ -8,7 +10,7 @@ const Results = () => {
 
   const { thisGamePoints } = location.state || { thisGamePoints: 0 };
 
-  const catgoryId = localStorage.getItem("categoryId")
+  const categoryId = localStorage.getItem("categoryId");
 
   useEffect(() => {
     const savedPoints = localStorage.getItem("points");
@@ -18,38 +20,77 @@ const Results = () => {
 
   const handleRestart = () => {
     localStorage.setItem("points", 0);
-    navigate(`/poll/${catgoryId}`, { state: { currentQuestion: 0 } });
+    navigate(`/poll/${categoryId}`, { state: { currentQuestion: 0 } });
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center">
-      <h1 className="text-3xl font-bold text-blue-600 mt-10">🎉 Poll Results 🎉</h1>
-      <div className="bg-white shadow-md rounded-md p-6 mt-6 text-center">
-        <h2 className="text-2xl font-semibold">Congratulations!</h2>
-        <p className="text-xl mt-2">
-          You earned <span className="text-green-600">+{thisGamePoints} points</span> in this game!
-        </p>
-        <p className="text-xl mt-2">
-          Your total score is <span className="text-green-600">{points} points</span>!
-        </p>
+    <div className="relative min-h-screen  flex items-center justify-center overflow-hidden">
+      <motion.div
+        className="relative z-10 bg-white shadow-lg rounded-lg p-8 text-center"
+        initial={{ y: -50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+      >
+        <motion.h1
+          className="text-4xl font-bold text-blue-600 mb-4"
+          initial={{ scale: 0.8 }}
+          animate={{ scale: 1.1 }}
+          transition={{
+            type: "spring",
+            stiffness: 150,
+            damping: 10,
+          }}
+        >
+          🎉 Poll Results 🎉
+        </motion.h1>
+        <motion.p
+          className="text-lg text-gray-800"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+        >
+          Congratulations on completing the poll!
+        </motion.p>
+        <motion.p
+          className="text-xl mt-2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.7 }}
+        >
+          You earned <span className="text-green-600 font-bold">+{thisGamePoints} points</span> this game!
+        </motion.p>
+        <motion.p
+          className="text-xl mt-2"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.9 }}
+        >
+          Your total score is{" "}
+          <span className="text-green-600 font-bold">{points} points</span>.
+        </motion.p>
 
-        <div className="mt-4 ">
-          <button
+        <div className="flex justify-center gap-4 mt-6">
+          <motion.button
             onClick={() => navigate("/")}
-            className="m-2 bg-blue-600 text-white px-4 py-2 rounded-md"
+            className="flex items-center gap-2 bg-blue-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-blue-700"
+            whileHover={{ scale: 1.1, rotate: 3 }}
+            whileTap={{ scale: 0.9 }}
           >
+            <FaHome />
             Home
-          </button>
+          </motion.button>
 
-          <button
+          <motion.button
             onClick={handleRestart}
-            className="m-2 bg-blue-600 text-white px-4 py-2 rounded-md"
+            className="flex items-center gap-2 bg-green-600 text-white px-6 py-2 rounded-lg shadow-md hover:bg-green-700"
+            whileHover={{ scale: 1.1, rotate: -3 }}
+            whileTap={{ scale: 0.9 }}
           >
+            <FaRedo />
             Play Again
-          </button>
+          </motion.button>
         </div>
-        
-      </div>
+      </motion.div>
     </div>
   );
 };

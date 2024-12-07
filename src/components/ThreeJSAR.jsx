@@ -22,7 +22,6 @@ const ThreeJSAR = ({ modelUrl }) => {
     const light = new THREE.HemisphereLight(0xffffff, 0xbbbbff, 1);
     scene.add(light);
 
-    // Load model using GLTFLoader
     const loader = new THREE.GLTFLoader();
     loader.load(
       modelUrl,

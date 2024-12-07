@@ -13,8 +13,10 @@
     "@google/model-viewer": "^4.0.0",
     "aframe": "^1.6.0",
     "aframe-ar": "^0.2.1-a",
+    "framer-motion": "^11.13.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-icons": "^5.4.0",
     "react-router-dom": "^7.0.1",
     "three": "^0.171.0"
   },

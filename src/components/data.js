@@ -7,10 +7,10 @@ export const categories = [
         subquestion: "Tech genius or righteous leader?",
         model1: "/models/marvel/iron_man.glb", 
         model1AR: "/models/marvel/iron_man.glb",
-        option1Name: "IronMan", 
+        model1Name: "IronMan", 
         model2: "/models/marvel/captain_america.glb", 
         model2AR: "/models/marvel/captain_america.glb",
-        option2Name: "CapAm", 
+        model2Name: "CapAm", 
       },
       { 
         question: "Thor’s Mjolnir or Doctor Strange’s Cloak?", 
@@ -19,8 +19,8 @@ export const categories = [
         model1AR: "/models/marvel/mjolnir.glb", 
         model2: "/models/marvel/cloak_of_levitation.glb", 
         model2AR: "/models/marvel/cloak_of_levitation.glb",
-        option1Name: "Mjolnir",
-        option2Name: "Cloak"
+        model1Name: "Mjolnir",
+        model2Name: "Cloak"
       },
       { 
         question: "Spider-Man’s web-slinging or Hulk’s smash?", 
@@ -29,8 +29,8 @@ export const categories = [
         model1AR: "/models/marvel/spider_man_animation.glb", 
         model2: "/models/marvel/hulk.glb", 
         model2AR: "/models/marvel/hulk.glb",
-        option1Name: "Spider",
-        option2Name: "Hulk"
+        model1Name: "Spider",
+        model2Name: "Hulk"
       },
       { 
         question: "Ant-Man vs. Rocket Raccoon", 
@@ -39,8 +39,8 @@ export const categories = [
         model1AR: "/models/marvel/ant_man.glb", 
         model2: "/models/marvel/rocket_racoon.glb", 
         model2AR: "/models/marvel/rocket_racoon.glb",
-        option1Name: "AntMan",
-        option2Name: "Rocket"
+        model1Name: "AntMan",
+        model2Name: "Rocket"
       },      
       { 
         question: "Loki’s mischief or Deadpool’s chaos?", 
@@ -49,8 +49,8 @@ export const categories = [
         model1AR: "/models/marvel/loki.glb", 
         model2: "/models/marvel/deadpool.glb", 
         model2AR: "/models/marvel/deadpool.glb",
-        option1Name: "Loki",
-        option2Name: "Deadpool"
+        model1Name: "Loki",
+        model2Name: "Deadpool"
       },
     ]
   },
@@ -64,8 +64,8 @@ export const categories = [
         model1AR: "/models/marvel/black_panther.glb", 
         model2: "/models/marvel/captain_marvel.glb", 
         model2AR: "/models/marvel/captain_marvel.glb",
-        option1Name: "Panther",
-        option2Name: "Marvel"
+        model1Name: "Panther",
+        model2Name: "Marvel"
       },
       { 
         question: "Being a SHIELD Agent or an Avenger?", 
@@ -74,8 +74,8 @@ export const categories = [
         model1AR: "/models/marvel/shield_agent_logo.glb", 
         model2: "/models/marvel/avengers_logo.glb", 
         model2AR: "/models/marvel/avengers_logo.glb",
-        option1Name: "Agent",
-        option2Name: "Avenger"
+        model1Name: "Agent",
+        model2Name: "Avenger"
       },
       { 
         question: "Tony Stark’s sarcasm or Peter Parker’s humor?", 
@@ -84,8 +84,8 @@ export const categories = [
         model1AR: "/models/marvel/tony_stark.glb", 
         model2: "/models/marvel/peter_parker.glb", 
         model2AR: "/models/marvel/peter_parker.glb",
-        option1Name: "Stark",
-        option2Name: "Parker"
+        model1Name: "Stark",
+        model2Name: "Parker"
       },
       { 
         question: "Wielding Cap’s Shield or IronMan’s Repulsors?", 
@@ -94,8 +94,8 @@ export const categories = [
         model1AR: "/models/marvel/captain_america_shield.glb", 
         model2: "/models/marvel/ironman_hand_repulsor.glb", 
         model2AR: "/models/marvel/ironman_hand_repulsor.glb",
-        option1Name: "Shield",
-        option2Name: "Repulsor"
+        model1Name: "Shield",
+        model2Name: "Repulsor"
       },
       {
         question: "Black Widow or Scarlet Witch?",
@@ -104,8 +104,8 @@ export const categories = [
         model1AR: "/models/marvel/black_widow.glb",
         model2: "/models/marvel/scarlet_witch.glb",
         model2AR: "/models/marvel/scarlet_witch.glb",
-        option1Name: "Widow",
-        option2Name: "Witch"
+        model1Name: "Widow",
+        model2Name: "Witch"
       },
     ]
   },
@@ -119,8 +119,8 @@ export const categories = [
         model1AR: "/models/tech/PS5_DualSense_Controller.glb", 
         model2: "/models/tech/Xbox_Controller.glb", 
         model2AR: "/models/tech/Xbox_Controller.glb",
-        option1Name: "PS5",
-        option2Name: "Xbox"
+        model1Name: "PS5",
+        model2Name: "Xbox"
       },
       { 
         question: "Robot or Drone?", 
@@ -129,9 +129,27 @@ export const categories = [
         model1AR: "/models/tech/Robot_Eva.glb", 
         model2: "/models/tech/Drone_Eva.glb", 
         model2AR: "/models/tech/Drone_Eva.glb",
-        option1Name: "Robot",
-        option2Name: "Drone"
+        model1Name: "Robot",
+        model2Name: "Drone"
       }
     ],
-  }
+  },
+  // {
+  //   name: "Tech",
+  //   questions: [
+    
+  //   ]
+  // },
+  // {
+  //   name: "Tech",
+  //   questions: [
+    
+  //   ]
+  // },
+  // {
+  //   name: "Tech",
+  //   questions: [
+    
+  //   ]
+  // },
 ];

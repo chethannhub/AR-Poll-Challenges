@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { motion } from "framer-motion";
+import { FaChevronRight, FaCube } from "react-icons/fa";
+
+
 
 const MenuToAR = ({ modelUrl: propModelUrl,modelARUrl: propModelARUrl, categoryId: propCategoryId, currentQuestion: propCurrentQuestion, totalQuestions: propTotalQuestions }) => {
   const [isAdvancedARSupported, setIsAdvancedARSupported] = useState(false);
@@ -85,26 +89,41 @@ const MenuToAR = ({ modelUrl: propModelUrl,modelARUrl: propModelARUrl, categoryI
   };
 
   return (
-    <div className="flex flex-col justify-center gap-2 text-center items-center mt-2">
-      <div className="text-center">
+    <motion.div
+      className="flex flex-col justify-center gap-4 text-center items-center mt-6"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.6 }}
+    >
+      <motion.div
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="text-center"
+      >
         <button
           onClick={handleViewAR}
-          className="bg-blue-600 text-white px-4 py-2 rounded-md mt-4"
+          className="bg-blue-600  flex flex-row items-center gap-2 text-white px-6 py-3 rounded-md shadow-md hover:bg-blue-700"
         >
           View in AR
+          {/* <FaCube/> */}
         </button>
-      </div>
+      </motion.div>
 
-      <div className="text-center ">
+      <motion.div
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        className="text-center"
+      >
         <button
           onClick={handleNextPoll}
-          className="bg-gray-400  text-white px-4 py-2 rounded-md mt-4"
+          className="bg-gray-400 flex flex-row items-center gap-2 text-white px-6 py-3 rounded-md shadow-md hover:bg-gray-500"
         >
           Next
+          <FaChevronRight />
         </button>
-      </div>
-
-    </div>
+      </motion.div>
+    </motion.div>
   );
 };
 
