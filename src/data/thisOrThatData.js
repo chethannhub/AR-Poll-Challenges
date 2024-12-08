@@ -42,8 +42,8 @@ export const thisOrThatData = {
             subquestion: "Shrink to size or master alien tech?",
             model1: "/models/marvel/ant_man.glb",
             model1AR: "/models/marvel/ant_man.glb",
-            model2: "/models/marvel/rocket_racoon.glb",
-            model2AR: "/models/marvel/rocket_racoon.glb",
+            model2: "/models/marvel/rocket_raccoon.glb",
+            model2AR: "/models/marvel/rocket_raccoon.glb",
             model1Name: "AntMan",
             model2Name: "Rocket"
           },

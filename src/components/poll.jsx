@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import "@google/model-viewer";
 import MenuToAR from "./menuToAR";
-import { FaCheckCircle, FaQuestionCircle } from "react-icons/fa";
+import { FaCheckCircle, FaQuestionCircle, FaTimes } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 const Poll = () => {
   const { categoryId, themeIndex } = useParams();
   const [feedback, setFeedback] = useState(null); 
+  const [isModalVisible, setIsModalVisible] = useState(true);
 
   const location = useLocation();
 
@@ -67,11 +68,50 @@ const Poll = () => {
     // setTimeout(() => setFeedback(null), 2000); 
   };
   
+  const closeModal = () => {
+    setIsModalVisible(false);
+  };
 
   const isSmallScreen = window.innerWidth < 990;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-blue-50 flex flex-col items-center">
+      {isModalVisible && (
+        <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-4/5 max-w-md text-center relative">
+            <button
+              onClick={closeModal}
+              className="absolute top-2 right-2 text-gray-600 hover:text-gray-900 focus:outline-none"
+              aria-label="Close"
+            >
+              <FaTimes size={24} />
+            </button>
+
+            <h2 className="text-2xl font-bold mb-4">How to Use AR</h2>
+            <p className="text-gray-600 mb-4">
+              1. Place the marker in front of your camera.<br />
+              2. Use your device camera to scan the marker.<br />
+              3. View the AR content.
+            </p>
+            <div className="mb-4">
+              <img
+                src="/images/GO_marker.png"
+                alt="Marker"
+                className="w-32 h-32 mx-auto"
+              />
+            </div>
+            <p className="mb-4 text-gray-600">Download this marker to view AR content</p>
+            <a
+              href="/images/GO_marker.png" // Replace with your marker image path
+              download="marker.jpg"
+              className="bg-blue-600 text-white px-4 py-2 rounded-md"
+            >
+              Download Marker
+            </a>
+          </div>
+        </div>
+      )}
+
       <motion.h1
         className="text-2xl sm:text-4xl lg:text-3xl font-bold mt-10 text-blue-600 flex justify-center items-center"
         initial={{ opacity: 0, y: -50 }}
@@ -90,9 +130,13 @@ const Poll = () => {
         {currentQuestion + 1} out of {totalQuestions}
       </motion.div>
 
+      {themeName == "Quiz" ? (
       <h3 className="text-lg sm:text-2xl lg:text-lg font-semibold text-gray-500">
           savedPoints: {savedPoints}
       </h3>
+      ) : (
+        ""
+      )}
 
       <motion.div
         className="w-full max-w-2xl bg-white shadow-lg rounded-lg p-6 mt-6"
