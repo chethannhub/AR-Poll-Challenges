@@ -1,7 +1,6 @@
 import React from "react";
 
 const ARjsMarker = ({ modelUrl }) => {
-  // console.log("Model Url recived in ARjsMarker " + modelUrl)
 
   return (
 

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation,  useParams } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaHome, FaRedo } from "react-icons/fa";
 
@@ -7,6 +7,8 @@ const Results = () => {
   const [points, setPoints] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
+  const { themeIndex } = useParams();
+
 
   const { thisGamePoints } = location.state || { thisGamePoints: 0 };
 
@@ -20,11 +22,11 @@ const Results = () => {
 
   const handleRestart = () => {
     localStorage.setItem("points", 0);
-    navigate(`/poll/${categoryId}`, { state: { currentQuestion: 0 } });
+    navigate(`/poll/${themeIndex}/${categoryId}`, { state: { currentQuestion: 0 } });
   };
 
   return (
-    <div className="relative min-h-screen  flex items-center justify-center overflow-hidden">
+    <div className="relative min-h-screen mt-10  flex items-start justify-center overflow-hidden">
       <motion.div
         className="relative z-10 bg-white shadow-lg rounded-lg p-8 text-center"
         initial={{ y: -50, opacity: 0 }}

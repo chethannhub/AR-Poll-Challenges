@@ -1,24 +1,31 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useLocation } from "react-router-dom";
 import "@google/model-viewer";
-import { categories } from "./data";
 import MenuToAR from "./menuToAR";
 import { FaCheckCircle, FaQuestionCircle } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 const Poll = () => {
-  const { categoryId } = useParams();
+  const { categoryId, themeIndex } = useParams();
+  const [feedback, setFeedback] = useState(null); 
+
   const location = useLocation();
 
+  const categoryState = location.state ? location.state.category : null;
+  const category = categoryState || JSON.parse(localStorage.getItem("category"));
+  
+  if (category) {
+      localStorage.setItem("category", JSON.stringify(category));
+  }
+  
   const queryParams = new URLSearchParams(location.search);
 
-  const category = categories[categoryId];
   const totalQuestions = category.questions.length;
   const initialCurrentQuestion = parseInt(queryParams.get("currentQuestion"), 10) || 0;
 
   const [currentQuestion, setCurrentQuestion] = useState(initialCurrentQuestion);
   const [selectedModel, setSelectedModel] = useState(localStorage.getItem("selectedModel") || null);
-  const [selectedModelAR, setSelectedModelAR] = useState(localStorage.getItem("sselectedModelAR") || null);
+  const [selectedModelAR, setSelectedModelAR] = useState(localStorage.getItem("selectedModelAR") || null);
   const [showSelectedModel, setShowShowSelectedModel] = useState(localStorage.getItem("showSelectedModel") === "true" || false);
 
   useEffect(() => {
@@ -33,34 +40,59 @@ const Poll = () => {
     }
   }, [location.search]);
 
-  const handleOption = (model, modelAR) => {
+  const themeName = localStorage.getItem("ThemeName")
+  let savedPoints = localStorage.getItem("current_quiz_points") || 0;
+
+  const handleOption = (model, modelAR, modelName) => {
+
+    if(themeName == "Quiz") {
+      const currentQuestionData = category.questions[currentQuestion];
+      const isCorrect = modelName === currentQuestionData.answer;
+    
+      setFeedback(isCorrect ? 'correct' : 'incorrect');
+    
+      if (isCorrect) {
+        const totalPoints = parseInt(savedPoints, 10) + 1;
+        localStorage.setItem('current_quiz_points', totalPoints);
+      }
+    }
+  
     setSelectedModel(model);
     setSelectedModelAR(modelAR);
-
+  
     localStorage.setItem("selectedModel", model);
     localStorage.setItem("selectedModelAR", modelAR);
     setShowShowSelectedModel(true);
+  
+    // setTimeout(() => setFeedback(null), 2000); 
   };
+  
+
+  const isSmallScreen = window.innerWidth < 990;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-100 to-blue-50 flex flex-col items-center">
       <motion.h1
-        className="text-3xl font-bold mt-10 text-blue-600 flex items-center"
+        className="text-2xl sm:text-4xl lg:text-3xl font-bold mt-10 text-blue-600 flex justify-center items-center"
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
       >
-        <FaQuestionCircle className="mr-2" /> {category.name}
+        <FaQuestionCircle className="mr-2" /> {category.categoryName}
       </motion.h1>
 
       <motion.div
-        className="text-base text-gray-600 font-semibold mt-2"
+        className="text-base sm:text-xl lg:text-lg text-gray-600 font-semibold mt-2"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.5 }}
       >
         {currentQuestion + 1} out of {totalQuestions}
       </motion.div>
+
+      <h3 className="text-lg sm:text-2xl lg:text-lg font-semibold text-gray-500">
+          savedPoints: {savedPoints}
+      </h3>
 
       <motion.div
         className="w-full max-w-2xl bg-white shadow-lg rounded-lg p-6 mt-6"
@@ -69,28 +101,30 @@ const Poll = () => {
         transition={{ duration: 0.5 }}
       >
         <div className="text-center">
-          <h2 className="text-xl font-semibold text-gray-700">{category.questions[currentQuestion].question}</h2>
-          <h3 className="text-sm font-semibold text-gray-500">
+          <h2 className="text-2xl sm:text-3xl lg:text-3xl font-semibold text-gray-700">
+            {category.questions[currentQuestion].question}
+          </h2>
+          <h3 className="text-lg sm:text-2xl lg:text-lg font-semibold text-gray-500">
             {category.questions[currentQuestion].subquestion}
           </h3>
+
         </div>
 
-        <div className="flex flex-col md:flex-row text-center justify-around items-center mt-4">
+        <div className="flex flex-col lg:flex-row text-center gap-2 justify-around items-center mt-2">
           {!showSelectedModel ? (
             <>
               {["model1", "model2"].map((modelKey, index) => (
                 <motion.div
                   key={index}
                   className="flex flex-col justify-around items-center"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+               
                 >
-
                   <motion.div
-                    className="text-center"
+                    className="text-center "
                     initial={{ opacity: 0 , scale: 0.8, y:-20}}
                     animate={{ opacity: 1 ,  scale: 1, y: 0}}
                     transition={{ duration: 1 }}
+                    whileHover={{ scale: 1.05 }}
                   >
                     <model-viewer
                       key={category.questions[currentQuestion][modelKey]}
@@ -98,41 +132,84 @@ const Poll = () => {
                       camera-controls
                       auto-rotate
                       rotation-per-second="45deg"
-                      className="w-40 h-40 md:w-48 md:h-48"
+                      style={{
+                        width: isSmallScreen ? "40vw" : "40vh",
+                        height: isSmallScreen ? "30vh" : "50vh",
+                      }}                      
                       loading="lazy"
                     ></model-viewer>
                   </motion.div>  
 
-                  <button
-                    onClick={() =>
-                      handleOption(
-                        category.questions[currentQuestion][modelKey],
-                        category.questions[currentQuestion][`${modelKey}AR`]
-                      )
-                    }
-                    className="bg-blue-600 text-center text-white px-4 py-2 rounded-md mt-4 flex items-center justify-center space-x-2"
-                  >
-                    <FaCheckCircle />
-                    <span>{category.questions[currentQuestion][`${modelKey}Name`]}</span>
-                  </button>
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="text-center"
+      >
+                      <button
+                        onClick={() =>
+                          handleOption(
+                            category.questions[currentQuestion][modelKey],
+                            category.questions[currentQuestion][`${modelKey}AR`],
+                            category.questions[currentQuestion][`${modelKey}Name`]
+                          )
+                        }
+                        className="bg-blue-600 sm:text-2xl lg:text-lg text-center text-white px-4 py-2 rounded-md mt-4 flex items-center justify-center space-x-2"
+                      >
+                        <FaCheckCircle />
+                        <span>{category.questions[currentQuestion][`${modelKey}Name`]}</span>
+                      </button>
+                    </motion.div>  
                   </motion.div>
                 ))}
               </>
             ) : (
               <motion.div
-                className="text-center relative"
+                className={`flex flex-col relative justify-around items-center ${
+                  feedback === "correct" ? "bg-green-500" : feedback === "incorrect" ? "bg-red-500" : ""
+                }`}
                 initial={{ opacity: 0, scale: 0.8, y: -50 }}
-                animate={{ opacity: 1, scale: 1.1, y: 0 }}
+                animate={{ 
+                  opacity: 1, 
+                  scale: feedback === "incorrect" ? 1 : 1.1, 
+                  y: 0 
+                }}
                 transition={{
                   duration: 0.8,
                   ease: "easeOut",
                 }}
-                whileHover={{
-                  scale: 1.15,
-                  rotate: [0, 5, -5, 0],
+                exit={{
+                  opacity: 0,
+                  scale: 0.9,
+                }}
+                onAnimationComplete={() => {
+                  setTimeout(() => {
+                    setFeedback(null); 
+                  }, 1000);
                 }}
               >
-                {/*Confetti Effect*/}
+
+                {/* Background Animation */}
+                <motion.div
+                  className="absolute inset-0"
+                  initial={{
+                    opacity: 0.2,
+                    backgroundColor:`${ feedback === "correct" ? "rgba(34, 197, 94, 1)" : "rgba(239, 68, 68, 1)"}`
+                  }}
+                  animate={{
+                    backgroundColor: "rgba(255, 255, 255, 0)", 
+                  }}
+                  transition={{
+                    duration: 1, 
+                  }}
+                  style={{
+                    pointerEvents: "none",
+                    zIndex: -1,
+                  }}
+                ></motion.div>
+
+                {/* Confetti Effect for Correct Answer */}
+                {(feedback === "correct" || themeName !== "Quiz") && (
+                <>
                 <div className="absolute inset-0 pointer-events-none">
                   {[...Array(8)].map((_, index) => (
                     <motion.div
@@ -146,9 +223,9 @@ const Poll = () => {
                       }}
                       initial={{ opacity: 0, x: 0, y: -10 }}
                       animate={{
-                        opacity: [1, 0],
+                        opacity: [1, 1, 0],
                         x: [0, (Math.random() - 0.5) * 200],
-                        y: [0, -80, 150],
+                        y: [0, -80, 350],
                         rotate: [0, 180, 260],
                       }}
                       transition={{
@@ -210,13 +287,58 @@ const Poll = () => {
                     ></motion.div>
                 ))}
               </div>
+                  </>
+                )}
+
+                {/* New Effect for Incorrect Answer */}
+                {feedback === "incorrect" && themeName === "Quiz" && (
+                  <motion.div
+                    className="absolute inset-0 pointer-events-none"
+                    initial={{ x: 0 }}
+                    animate={{ x: [0, -10, 10, -10, 0] }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <div
+                      className="absolute inset-0 bg-red-500 opacity-30"
+                      style={{ zIndex: 1 }}
+                    ></div>
+                    {[...Array(5)].map((_, index) => (
+                      <motion.div
+                        key={`xmark-${index}`}
+                        className="absolute w-6 h-6"
+                        style={{
+                          background: `linear-gradient(45deg, #FF0000, #FF6347)`,
+                          clipPath: "polygon(0 0, 100% 0, 50% 100%)",
+                          top: `${Math.random() * 100}%`,
+                          left: `${Math.random() * 100}%`,
+                        }}
+                        initial={{ opacity: 0 }}
+                        animate={{
+                          opacity: [1, 0],
+                          rotate: [0, 360],
+                          scale: [0.8, 1.2],
+                        }}
+                        transition={{
+                          duration: 1.5,
+                          delay: Math.random() * 0.5,
+                          repeat: 1,
+                        }}
+                      ></motion.div>
+                    ))}
+                  </motion.div>
+                )}
+
 
               <model-viewer
                 src={selectedModel}
                 camera-controls
                 auto-rotate
                 rotation-per-second="45deg"
-                className="w-40 h-40 md:w-48 md:h-48 z-10 relative"
+                className="z-10 relative"
+                style={{
+                  width: isSmallScreen ? "40vw" : "40vh",
+                  height: isSmallScreen ? "30vh" : "40vh",
+                }} 
               ></model-viewer>
             </motion.div>
 
@@ -231,9 +353,11 @@ const Poll = () => {
             transition={{ duration: 0.5 }}
           >
             <MenuToAR
+              category={category}
               modelUrl={selectedModel}
               modelARUrl={selectedModelAR}
               categoryId={categoryId}
+              themeIndex={themeIndex}
               currentQuestion={currentQuestion}
               totalQuestions={totalQuestions}
             />

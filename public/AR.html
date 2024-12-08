@@ -66,11 +66,6 @@
             }
 
             const modelUrl = getQueryParam('model');
-            const categoryId = getQueryParam('categoryId');
-            const currentQuestion = getQueryParam('currentQuestion');
-            const totalQuestions = getQueryParam('totalQuestions');
-
-            console.log("Data recived from AR Experience page in AR.html: ", modelUrl, categoryId, currentQuestion, totalQuestions)
 
             if (modelUrl) {
                 document.getElementById('animated-asset').setAttribute('src', modelUrl);
@@ -80,25 +75,29 @@
 
 
           
-          function navigateToARExperience() {
-            const modelUrl = getQueryParam('model');
-            const modelARUrl = getQueryParam('modelAR');
-            const categoryId = getQueryParam('categoryId');
-            const currentQuestion = getQueryParam('currentQuestion')
-            const showSelectedModel = localStorage.getItem('showSelectedModel');
-
-            console.log("In AR html: ",modelUrl, modelARUrl,showSelectedModel, categoryId, currentQuestion)
-          
-            if (modelUrl) {
-              localStorage.setItem('selectedModel', modelUrl);
-              localStorage.setItem('selectedModelAR', modelARUrl);
-              localStorage.setItem('categoryId', categoryId);
-              localStorage.setItem('currentQuestion', currentQuestion);
-              localStorage.setItem('showSelectedModel', true);
-          
-              window.location.href = `/poll/${categoryId}?currentQuestion=${encodeURIComponent(currentQuestion)}`;
+            function navigateToARExperience() {
+                const categoryStr = getQueryParam('category');
+                const category = categoryStr ? JSON.parse(decodeURIComponent(categoryStr)) : [];
+                        
+                const modelUrl = getQueryParam('model');
+                const modelARUrl = getQueryParam('modelAR');
+                const categoryId = getQueryParam('categoryId');
+                const themeIndex = getQueryParam('themeIndex');
+                const currentQuestion = getQueryParam('currentQuestion');
+                const showSelectedModel = localStorage.getItem('showSelectedModel');
+                        
+                if (modelUrl) {
+                    localStorage.setItem('category', JSON.stringify(category));
+                    localStorage.setItem('selectedModel', modelUrl);
+                    localStorage.setItem('selectedModelAR', modelARUrl);
+                    localStorage.setItem('categoryId', categoryId);
+                    localStorage.setItem('currentQuestion', currentQuestion);
+                    localStorage.setItem('showSelectedModel', true);
+            
+                    window.location.href = `/poll/${themeIndex}/${categoryId}?currentQuestion=${encodeURIComponent(currentQuestion)}`;
+                }
             }
-          }
+            
             
             
         </script>

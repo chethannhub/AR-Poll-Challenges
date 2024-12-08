@@ -3,10 +3,8 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { motion } from "framer-motion";
 import { FaChevronRight, FaCube } from "react-icons/fa";
 
-
-
-const MenuToAR = ({ modelUrl: propModelUrl,modelARUrl: propModelARUrl, categoryId: propCategoryId, currentQuestion: propCurrentQuestion, totalQuestions: propTotalQuestions }) => {
-  const [isAdvancedARSupported, setIsAdvancedARSupported] = useState(false);
+const MenuToAR = ({category: propCategory, modelUrl: propModelUrl,modelARUrl: propModelARUrl, categoryId: propCategoryId, themeIndex: propThemeIndex,currentQuestion: propCurrentQuestion, totalQuestions: propTotalQuestions }) => {
+const [isAdvancedARSupported, setIsAdvancedARSupported] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
@@ -16,26 +14,29 @@ const MenuToAR = ({ modelUrl: propModelUrl,modelARUrl: propModelARUrl, categoryI
     return urlParams.get(param);
   };
 
+  const queryCategory = getQueryParam("category");
   const queryModelUrl = getQueryParam("model");
   const queryModelARUrl = getQueryParam("modelAR");
   const queryCategoryId = getQueryParam("categoryId");
+  const queryThemeIndex = getQueryParam("themeIndex");
   const queryCurrentQuestion = parseInt(getQueryParam("currentQuestion"), 10) || 0;
   const queryTotalQuestions = parseInt(getQueryParam("totalQuestions"), 10) || 0;
 
+  const category = propCategory || queryCategory;
   const modelUrl = propModelUrl || queryModelUrl;
   const modelARUrl = propModelARUrl || queryModelARUrl;
   const categoryId = propCategoryId || queryCategoryId;
+  const themeIndex = propThemeIndex || queryThemeIndex;
   const currentQuestion = propCurrentQuestion || queryCurrentQuestion;
   const totalQuestions = propTotalQuestions || queryTotalQuestions;
 
+
   useEffect(() => {
-    console.log("Data recived in menu-to-ar page: ", modelUrl, categoryId, currentQuestion, totalQuestions)
-    console.log("current questions in menu-to-ar: ", currentQuestion)
     if (!modelUrl || !categoryId || isNaN(currentQuestion) || !totalQuestions) {
       if (categoryId) {
         alert("Required information is missing. Returning to poll.");
         console.log("Required information is missing. Returning to poll.");
-        navigate(`/poll/${categoryId}`);
+        navigate(`/poll/${themeIndex}/${categoryId}`);
       } else {
         alert("category Id is missing. Returning to home.");
         console.log("category Id is missing. Returning to home.");
@@ -61,12 +62,29 @@ const MenuToAR = ({ modelUrl: propModelUrl,modelARUrl: propModelARUrl, categoryI
     const nextQuestion = currentQuestion + 1;
   
     if (nextQuestion < totalQuestions) {
-      navigate(`/poll/${categoryId}?currentQuestion=${nextQuestion}`);
+      navigate(`/poll/${themeIndex}/${categoryId}?currentQuestion=${nextQuestion}`,  
+        { state: { category: category } });
 
-      console.log("currentQuestion when navigating to poll from menu :", currentQuestion)
     } else {
-      const savedPoints = localStorage.getItem("points") || 0;
-      const totalPoints = parseInt(savedPoints, 10) + pointsForThisGame;
+      const themeName = localStorage.getItem("ThemeName")
+
+      if(themeName == "Quiz") {
+        const savedPoints = localStorage.getItem("points") || 0;
+        const quizPoints = localStorage.getItem("current_quiz_points") || 0;
+        const totalPoints = parseInt(savedPoints, 10) + parseInt(quizPoints, 10);
+        localStorage.setItem('points', totalPoints);
+        navigate('/results', {
+          state: { thisGamePoints: quizPoints }
+        });
+        localStorage.removeItem("current_quiz_points")
+      } else {
+        const savedPoints = localStorage.getItem("points") || 0;
+        const totalPoints = parseInt(savedPoints, 10) + pointsForThisGame;
+        localStorage.setItem('points', totalPoints);
+        navigate('/results', {
+          state: { thisGamePoints: pointsForThisGame }
+        });
+      }
 
       localStorage.setItem('selectedModel', null);
       localStorage.setItem('selectedModelAR', null);
@@ -74,19 +92,16 @@ const MenuToAR = ({ modelUrl: propModelUrl,modelARUrl: propModelARUrl, categoryI
       localStorage.setItem('currentQuestion', 0);
       localStorage.setItem('showSelectedModel', false);
   
-      localStorage.setItem('points', totalPoints);
-      navigate('/results', {
-        state: { thisGamePoints: pointsForThisGame }
-      });
     }
 
   };
   
 
   const handleViewAR = () => {
-    console.log("Data passing to view AR: ", modelUrl, categoryId, currentQuestion, totalQuestions)
-    window.location.href = `/AR.html?model=${encodeURIComponent(modelUrl)}&modelAR=${encodeURIComponent(modelARUrl)}&categoryId=${categoryId}&currentQuestion=${currentQuestion}&totalQuestions=${totalQuestions}`;
+    const categoryStr = encodeURIComponent(JSON.stringify(category));
+    window.location.href = `/AR.html?model=${encodeURIComponent(modelUrl)}&modelAR=${encodeURIComponent(modelARUrl)}&category=${categoryStr}&themeIndex=${themeIndex}&categoryId=${categoryId}&currentQuestion=${currentQuestion}&totalQuestions=${totalQuestions}`;
   };
+
 
   return (
     <motion.div
@@ -106,7 +121,6 @@ const MenuToAR = ({ modelUrl: propModelUrl,modelARUrl: propModelARUrl, categoryI
           className="bg-blue-600  flex flex-row items-center gap-2 text-white px-6 py-3 rounded-md shadow-md hover:bg-blue-700"
         >
           View in AR
-          {/* <FaCube/> */}
         </button>
       </motion.div>
 

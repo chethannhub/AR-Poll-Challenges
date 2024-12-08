@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import React, {useEffect} from "react";
 import Home from "./pages/home";
+import Categories from "./pages/catgories.jsx";
 import Poll from "./components/poll.jsx";
 import Results from "./components/results.jsx";
 import MenuToAR from "./components/menuToAR.jsx";
@@ -40,7 +41,8 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/poll/:categoryId" element={<Poll />} />
+        <Route path="/theme/:themeIndex" element={<Categories />} />
+        <Route path="/poll/:themeIndex/:categoryId" element={<Poll />} />
         <Route path="/menu_to_ar" element={<MenuToAR/>} />
         <Route path="/results" element={<Results />} />
       </Routes>
