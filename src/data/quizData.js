@@ -1,6 +1,6 @@
 export const quizData = {
     themeState: "Quiz",
-    themeImg: "/models/marvel/images/quiz_card.png",
+    themeImg: "/images/quiz_card.png",
     categories: [
       {
         themeState: "Quiz",

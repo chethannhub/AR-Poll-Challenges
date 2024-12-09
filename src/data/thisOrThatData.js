@@ -1,6 +1,6 @@
 export const thisOrThatData = {
     themeState: "This or That",
-    themeImg: "/models/marvel/images/thisOrThat_card.png",
+    themeImg: "images/thisOrThat_card.png",
     categories: [
       {
         themeState: "This or That",
