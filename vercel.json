@@ -1,0 +1,9 @@
+{
+    "rewrites": [
+      { "source": "/poll/:themeIndex/:categoryId", "destination": "/" },
+      { "source": "/theme/:themeIndex", "destination": "/" },
+      { "source": "/menu_to_ar", "destination": "/" },
+      { "source": "/results", "destination": "/" }
+    ]
+  }
+  
