@@ -57,12 +57,13 @@ const Poll = () => {
         localStorage.setItem('current_quiz_points', totalPoints);
       }
     }
+    
+    localStorage.setItem("selectedModel", model);
+    localStorage.setItem("selectedModelAR", modelAR);
   
     setSelectedModel(model);
     setSelectedModelAR(modelAR);
   
-    localStorage.setItem("selectedModel", model);
-    localStorage.setItem("selectedModelAR", modelAR);
     setShowShowSelectedModel(true);
   
     // setTimeout(() => setFeedback(null), 2000); 
