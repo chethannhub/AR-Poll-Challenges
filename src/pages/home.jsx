@@ -28,13 +28,13 @@ const Home = () => {
         <h1 className="text-4xl font-bold">Welcome to AR Poll!</h1>
       </motion.header>
 
-      <section className="max-w-2xl w-full px-4 py-10">
+      <section className="w-[500px] max-w-2xl  sm:w-full  px-4 py-10">
         <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
           Choose Your Poll Category
         </h2>
 
         <motion.div
-          className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-3 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-1  lg:grid-cols-3 gap-6"
           initial="hidden"
           animate="visible"
           variants={{
@@ -44,6 +44,7 @@ const Home = () => {
         >
           {themes.map((theme, index) => (
             <Link 
+            key={index}
             to={`/theme/${theme.path}`}
             onClick={() => setThemeName(theme.name)}
             >
@@ -52,7 +53,7 @@ const Home = () => {
                 className="bg-white shadow-lg rounded-lg p-6 flex flex-col items-center hover:scale-105 transition-transform"
                 whileHover={{ scale: 1.05 }}
               >
-                <div className="h-44 w-full overflow-hidden rounded-t-lg">
+                <div className="h-[500px]  sm:h-44 w-full overflow-hidden rounded-t-lg">
                   <img
                     src={theme.image}
                     className="w-full h-full object-cover"
