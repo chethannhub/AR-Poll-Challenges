@@ -2,6 +2,10 @@
 
 An interactive and fun platform that leverages augmented reality (AR) to engage users with quizzes and polls. Users can vote on 3D objects, trigger exciting animations, and view real-time results, all through a marker-based AR experience.
 
+## Live Demo
+
+You can try the app live here: [AR Polls and Challenges - Live Demo](https://ar-poll-challenges.vercel.app)
+
 ## Features
 
 - **Interactive AR Polls & Challenges**: 
